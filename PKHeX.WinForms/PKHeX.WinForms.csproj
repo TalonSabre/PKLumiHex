@@ -24,7 +24,7 @@
     <PublishSingleFile>true</PublishSingleFile>
     <PublishTrimmed>false</PublishTrimmed>
     <SelfContained>false</SelfContained>
-    <Version>0.4.3</Version>
+    <Version>0.4.3.1</Version>
     <Copyright>Kaphotics, Team Luminescent</Copyright>
     <Product>PKLumiHeX</Product>
     <Authors>Kaphotics, Red, TalonSabre, BlupBlurp</Authors>

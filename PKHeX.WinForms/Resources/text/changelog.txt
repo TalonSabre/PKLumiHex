@@ -1,11 +1,18 @@
 PKLumiHeX - Authored by Red., Updated by PrinceTalon
 https://github.com/TalonSabre/PKLumiHeX/
 
+0.4.3.1 11-22-2025
+ More credit to @BlupBlurp
+- Added a popup for Pokemon unavailable in Lumi (the ones that appear as Ditto)
+  - Click the warning icon above the sprite on the left side for a link to the online dex!
+- Include moves in ignoring legality checks for Lumi saves
+
 0.4.3   11-22-2025
-- @BlupBlurp added Pikipek line to the list of available Lumi mons (for the icons to not show as Ditto)
-- @BlupBlurp disabled legality checks (all Pokémon were appearing as illegal since the vanilla BDSP checks are used)
-- @BlupBlurp added item icons for Berry Juice and Old Gateau
-- @BlupBlurp added custom warning for Pokémon not available in Lumi (the ones that appear as Ditto)
+ Credit: @BlupBlurp
+- Added Pikipek line to the list of available Lumi mons (for the icons to not show as Ditto)
+- Disabled legality checks (all Pokemon were appearing as illegal since the vanilla BDSP checks are used)
+  - Removes annoying red triangle!
+- Added item icons for Berry Juice and Old Gateau
 
 0.4.2   10-3-2025
 - @BlupBlurp fixed certain hold items missing
@@ -25,7 +32,7 @@ https://github.com/TalonSabre/PKLumiHeX/
 
 0.3.6.1 was a quick fix to remove lingering "None" items
 
-0.3.6     7-2-2023
+0.3.6    7-2-2023
 - Dex Editor will read and write genders seen correctly
   - Previously would uncheck all genders for the 3 Pokemon below the selected one
 - "None" items should be removed from your bag
