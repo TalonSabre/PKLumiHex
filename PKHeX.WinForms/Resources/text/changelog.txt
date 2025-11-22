@@ -1,6 +1,11 @@
 PKLumiHeX - Authored by Red., Updated by PrinceTalon
 https://github.com/TalonSabre/PKLumiHeX/
 
+0.4.3   11-22-2025
+- @BlupBlurp added Pikipek line to the list of available Lumi mons (for the icons to not show as Ditto)
+- @BlupBlurp disabled legality checks (all Pokémon were appearing as illegal since the vanilla BDSP checks are used)
+- @BlupBlurp added item icons for Berry Juice and Old Gateau
+
 0.4.2   10-3-2025
 - @BlupBlurp fixed certain hold items missing
 

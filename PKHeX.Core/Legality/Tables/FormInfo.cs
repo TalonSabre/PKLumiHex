@@ -160,6 +160,7 @@ public static class FormInfo
     {
         (ushort)Litwick, (ushort)Lampent, (ushort)Chandelure,
         (ushort)Sylveon,
+        (ushort)Pikipek, (ushort)Trumbeak, (ushort)Toucannon,
         (ushort)Perrserker, (ushort)Sirfetchd, (ushort)MrRime, (ushort)Cursola, (ushort)Obstagoon,
         (ushort)Kleavor, (ushort)Overqwil, (ushort)Sneasler, (ushort)Wyrdeer, (ushort)Ursaluna,
         (ushort)Tinkatink, (ushort)Tinkatuff, (ushort)Tinkaton
