@@ -88,6 +88,15 @@ public sealed class LegalityAnalysis
         PersonalInfo = pi;
         SlotOrigin = source;
 
+        // Ignore legality checks for PB8LUMI saves
+        if (pk is PB8LUMI)
+        {
+            Info = new LegalInfo(pk, Parse);
+            Valid = true;
+            Parsed = true;
+            return;
+        }
+
         Info = new LegalInfo(pk, Parse);
 #if SUPPRESS
         try
@@ -204,7 +213,7 @@ public sealed class LegalityAnalysis
         if (Entity.Version == (int)GameVersion.CXD)
             CXD.Verify(this);
 
-        if (Info.EncounterMatch is WC3 {NotDistributed: true})
+        if (Info.EncounterMatch is WC3 { NotDistributed: true })
             AddLine(Severity.Invalid, LEncUnreleased, CheckIdentifier.Encounter);
 
         if (Entity.Format >= 8)
