@@ -92,9 +92,25 @@ public sealed class LegalityAnalysis
         if (pk is PB8LUMI)
         {
             Info = new LegalInfo(pk, Parse);
-            Valid = true;
-            Parsed = true;
-            return;
+            // Mark all moves as valid to prevent them from showing in the report
+            Info.Moves.AsSpan().Fill(MoveResult.Empty);
+            Info.Relearn.AsSpan().Fill(MoveResult.Empty);
+
+            if (IsNotInLumi(pk.Species, pk.Form))
+            {
+                // For unavailable Pokémon, show a custom warning
+                AddLine(Severity.Invalid, "This species or form does not exist in Luminescent Platinum.\n\nIt will appear as Ditto in-game, but will retain its original stats, typing, and moves.\n\nFor a full list of available Pokémon, visit:https://luminescent.team/pokedex", CheckIdentifier.GameOrigin);
+                Valid = false;
+                Parsed = true;
+                return;
+            }
+            else
+            {
+                // For available Pokémon, skip all legality checks
+                Valid = true;
+                Parsed = true;
+                return;
+            }
         }
 
         Info = new LegalInfo(pk, Parse);
@@ -340,5 +356,39 @@ public sealed class LegalityAnalysis
 
         Mark.Verify(this);
         Arceus.Verify(this);
+    }
+
+    /// <summary>
+    /// Checks if a Pokémon species/form is not available in Luminescent Platinum.
+    /// </summary>
+    /// <remarks>
+    /// Uses the same logic as SpriteBuilder to determine unavailable Pokémon.
+    /// </remarks>
+    private static bool IsNotInLumi(ushort species, byte form)
+    {
+        foreach (ushort naspecies in FormInfo.WithUnavailableForm)
+        {
+            if (species == naspecies)
+            {
+                var forms = FormInfo.Unavailable(species);
+
+                if (forms == Array.Empty<byte>()) return false;
+
+                for (int i = 0; i < forms.Length; i++)
+                {
+                    if (form != forms[i]) continue;
+                    return true;
+                }
+            }
+        }
+
+        foreach (ushort inspecies in FormInfo.NewGenAvailables)
+        {
+            if (species == inspecies)
+                return false;
+        }
+
+        if (species < 494) return false;
+        else return true;
     }
 }

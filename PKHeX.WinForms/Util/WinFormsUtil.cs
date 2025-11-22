@@ -118,7 +118,110 @@ public static class WinFormsUtil
         if (sound)
             System.Media.SystemSounds.Asterisk.Play();
         string msg = string.Join(Environment.NewLine + Environment.NewLine, lines);
+
+        // Check if message contains a URL and show clickable link dialog
+        if (msg.Contains("https://") || msg.Contains("http://"))
+            return ShowAlertWithLink(msg, sound);
+
         return MessageBox.Show(msg, "Alert", MessageBoxButtons.OK, sound ? MessageBoxIcon.Information : MessageBoxIcon.None);
+    }
+
+    private static DialogResult ShowAlertWithLink(string message, bool sound)
+    {
+        using var form = new Form
+        {
+            Text = "Alert",
+            StartPosition = FormStartPosition.CenterParent,
+            FormBorderStyle = FormBorderStyle.FixedDialog,
+            MaximizeBox = false,
+            MinimizeBox = false,
+            Size = new Size(480, 280),
+            Icon = SystemIcons.Information
+        };
+
+        // Find URL in message and split
+        var urlStart = message.IndexOf("http", StringComparison.Ordinal);
+        if (urlStart != -1)
+        {
+            var urlEnd = message.IndexOf('\n', urlStart);
+            if (urlEnd == -1) urlEnd = message.IndexOf('\r', urlStart);
+            if (urlEnd == -1) urlEnd = message.Length;
+
+            var beforeUrl = message[..urlStart].TrimEnd();
+            var url = message[urlStart..urlEnd].Trim();
+            var afterUrl = urlEnd < message.Length ? message[urlEnd..].Trim() : "";
+
+            // Text before URL
+            var label = new Label
+            {
+                AutoSize = false,
+                Location = new Point(20, 20),
+                Size = new Size(420, 120),
+                Text = beforeUrl
+            };
+            form.Controls.Add(label);
+
+            // Clickable link
+            var linkLabel = new LinkLabel
+            {
+                AutoSize = false,
+                Location = new Point(20, 140),
+                Size = new Size(420, 25),
+                Text = url,
+                LinkBehavior = LinkBehavior.HoverUnderline
+            };
+            linkLabel.LinkClicked += (s, e) =>
+            {
+                try
+                {
+                    System.Diagnostics.Process.Start(new System.Diagnostics.ProcessStartInfo
+                    {
+                        FileName = url,
+                        UseShellExecute = true
+                    });
+                }
+                catch { /* Ignore errors */ }
+            };
+            form.Controls.Add(linkLabel);
+
+            // Text after URL (if any)
+            if (!string.IsNullOrWhiteSpace(afterUrl))
+            {
+                var labelAfter = new Label
+                {
+                    AutoSize = false,
+                    Location = new Point(20, 175),
+                    Size = new Size(420, 30),
+                    Text = afterUrl
+                };
+                form.Controls.Add(labelAfter);
+            }
+        }
+        else
+        {
+            // No URL found, just show the message
+            var label = new Label
+            {
+                AutoSize = false,
+                Location = new Point(20, 20),
+                Size = new Size(420, 180),
+                Text = message
+            };
+            form.Controls.Add(label);
+        }
+
+        // OK button
+        var btnOK = new Button
+        {
+            Text = "OK",
+            DialogResult = DialogResult.OK,
+            Location = new Point(190, 210),
+            Size = new Size(80, 30)
+        };
+        form.Controls.Add(btnOK);
+        form.AcceptButton = btnOK;
+
+        return form.ShowDialog();
     }
 
     internal static DialogResult Prompt(MessageBoxButtons btn, params string[] lines)

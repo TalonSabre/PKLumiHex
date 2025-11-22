@@ -38,7 +38,11 @@ public static class LegalityFormatting
         {
             if (chk.Valid)
                 continue;
-            lines.Add(chk.Format(L_F0_1));
+            // If the comment contains a URL (Lumi invalid mon custom message), show it without the severity prefix. I just think it looks cleaner that way.
+            if (chk.Comment.Contains("http://") || chk.Comment.Contains("https://"))
+                lines.Add(chk.Comment);
+            else
+                lines.Add(chk.Format(L_F0_1));
         }
     }
 
